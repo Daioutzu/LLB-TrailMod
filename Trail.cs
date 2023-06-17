@@ -12,7 +12,6 @@ namespace TrailMod {
     public class Trail : MonoBehaviour {
         private float tick = 0;
         private float speed;
-        private Vector3 meshOffset = new Vector3(0, 0, 0.2f);
         private GameObject trailFolder;
         private Material mat;
         private bool isTrailActive;
@@ -21,12 +20,12 @@ namespace TrailMod {
 
         // Paramaters
         private float speedThreshold;
-        private float rate;
         private float lifeTime;
-        private float factor1;
-        private float factor2;
+        private float rate;
         private Color color1;
         private Color color2;
+        private float factor1;
+        private float factor2;
 
         private void Start() {
             // Create a "folder" for the trails
@@ -44,24 +43,25 @@ namespace TrailMod {
                 tex = GetComponent<SkinnedMeshRenderer>().sharedMaterial.GetTexture("_MainTexture");
 
             // Init Parameters
-            speedThreshold = TrailModPlugin.speedThreshold.Value;
-            rate = TrailModPlugin.rate.Value;
-            lifeTime = TrailModPlugin.lifeTime.Value;
-            factor1 = TrailModPlugin.matFactor1.Value;
-            factor2 = TrailModPlugin.matFactor2.Value;
+            speedThreshold = (float)TrailModPlugin.speedThreshold.Value;
+            lifeTime = (float)TrailModPlugin.lifeTime.Value / 1000;
+            rate = lifeTime / ((float)TrailModPlugin.numberOfClones.Value * 1.15f);
+            factor1 = (float)TrailModPlugin.matFactor1.Value / 100;
+            factor2 = (float)TrailModPlugin.matFactor2.Value / 100;
 
             // Assign Colors
             color1 = new Color(
-                TrailModPlugin.firstColorR.Value,
-                TrailModPlugin.firstColorG.Value,
-                TrailModPlugin.firstColorB.Value,
-                TrailModPlugin.firstColorA.Value);
+                (float)TrailModPlugin.firstColorR.Value / 255,
+                (float)TrailModPlugin.firstColorG.Value / 255,
+                (float)TrailModPlugin.firstColorB.Value / 255,
+                (float)TrailModPlugin.firstColorA.Value / 255);
 
             color2 = new Color(
-                TrailModPlugin.secondColorR.Value,
-                TrailModPlugin.secondColorG.Value,
-                TrailModPlugin.secondColorB.Value,
-                TrailModPlugin.secondColorA.Value);
+                (float)TrailModPlugin.secondColorR.Value / 255,
+                (float)TrailModPlugin.secondColorG.Value / 255,
+                (float)TrailModPlugin.secondColorB.Value / 255,
+                (float)TrailModPlugin.secondColorA.Value / 255);
+            
 
             // Assign Material
             mat.SetColor("_Color", color1);
@@ -93,7 +93,7 @@ namespace TrailMod {
 
                 GameObject gObj = new GameObject();
                 gObj.transform.parent = trailFolder.transform;
-                gObj.transform.SetPositionAndRotation(transform.position + meshOffset, transform.rotation);
+                gObj.transform.SetPositionAndRotation(transform.position, transform.rotation);
 
                 MeshFilter mf = gObj.AddComponent<MeshFilter>();
                 MeshRenderer mr = gObj.AddComponent<MeshRenderer>();
@@ -103,14 +103,22 @@ namespace TrailMod {
                 mf.mesh = mesh;
                 mr.material = mat;
 
-                StartCoroutine(AnimateMaterialFloat(mr.material, 1));
+                StartCoroutine(AnimateMaterialFloat(mr.material, 1, gObj.transform.GetSiblingIndex()));
+                RenderQueueUpdate();
 
                 Destroy(gObj, lifeTime);
                 Destroy(mesh, lifeTime);
             }
         }
 
-        IEnumerator AnimateMaterialFloat(Material _mat, float timer) {
+        void RenderQueueUpdate() {
+            for (int i = 0; i < trailFolder.transform.childCount; i++) {
+                Transform mesh = trailFolder.transform.GetChild(i);
+                mesh.GetComponent<MeshRenderer>().material.renderQueue = (3000 + trailFolder.transform.childCount) - mesh.GetSiblingIndex();
+            }
+        }
+
+        IEnumerator AnimateMaterialFloat(Material _mat, float timer, int index) {
             while (timer > 0) {
                 timer -= rate / lifeTime;
 

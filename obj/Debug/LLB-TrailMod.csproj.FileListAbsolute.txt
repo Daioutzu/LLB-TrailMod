@@ -19,3 +19,12 @@ D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\output\UnityEngine.Cor
 D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\output\UnityEngine.dll
 D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\obj\Debug\LLB-TrailMod.csproj.CopyComplete
 D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\obj\Debug\LLB-TrailMod.csproj.AssemblyReference.cache
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\TrailMod.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\TrailMod.pdb
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\0Harmony.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\Assembly-CSharp-nstrip.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\BepInEx.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\LLBModdingLib.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\UnityEngine.AssetBundleModule.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\UnityEngine.CoreModule.dll
+D:\Andy\Projets\LLB MOD\2. Repositories\Mods\LLB-TrailMod\bin\Debug\UnityEngine.dll

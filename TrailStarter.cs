@@ -11,18 +11,19 @@ namespace TrailMod {
 
     public class TrailStarter : MonoBehaviour {
 
-        public Transform holderPlayers;
+        public Transform players;
+        public Transform player;
 
         void Start() {
             // Avoid the MainMenu
             if (SceneManager.GetActiveScene().name == "title")
                 return;
 
-            holderPlayers = GameObject.Find("holderPlayers").transform;
+            players = GameObject.Find("holderPlayers").transform;
 
             // For each Players in HolderPlayers
-            for (int i = 0; i < holderPlayers.childCount; i++) {
-                Transform player = holderPlayers.GetChild(i);
+            for (int i = 0; i < players.childCount; i++) {
+                player = players.GetChild(i);
 
                 // For each Elements in Player/main/...
                 foreach (Transform element in player.GetChild(0)) {
@@ -31,32 +32,85 @@ namespace TrailMod {
                     }
                 }
 
-                // Candyman Legs Exception
-                Transform candylegs = player.Find("runLegsVisual");
-                if (candylegs != null) {
-                    foreach (Transform element in candylegs) {
-                        if (element.name.Contains("_MainRenderer")) {
-                            element.gameObject.AddComponent<Trail>();
-                        }
+                /// EXCEPTIONS
+                if (player.name == "candyPlayer")
+                    CandymanException();
+
+                if (player.name == "bossPlayer")
+                    DoomboxException();
+
+                if (player.name == "bagPlayer") {
+                    DustAndAshesException();
+                    //DustAndAshesShadowException(); // WIP
+                }
+
+                if (player.name == "copPlayer")
+                    NitroException();
+            }
+        }
+
+        void CandymanException() {
+            Transform candylegs = player.Find("runLegsVisual");
+
+            if (candylegs != null) {
+                foreach (Transform mesh in candylegs) {
+                    if (mesh.name.Contains("_MainRenderer")) {
+                        mesh.gameObject.AddComponent<Trail>();
+                        TrailModPlugin.log("[Trail Exception] Player" + (player.GetSiblingIndex() + 1) + "/" + mesh.name);
+                        return;
                     }
                 }
+            }
+        }
 
-                // Doombox Crouch Exception
-                Transform boomboxProp = player.GetChild(0).Find("boomboxProp");
-                if (boomboxProp != null) {
-                    boomboxProp.gameObject.AddComponent<Trail>();
+        void DoomboxException() {
+            Transform DoomboxProps = player.GetChild(0);
+
+            foreach (Transform mesh in DoomboxProps) {
+                if (mesh.name.Contains("Prop")) {
+                    mesh.gameObject.AddComponent<Trail>();
+                    TrailModPlugin.log("[Trail Exception] Player" + (player.GetSiblingIndex() + 1) + "/" + mesh.name);
+                    return;
                 }
+            }
+        }
 
-                // Dust&Ashes JumpProp Exception
-                Transform jumpProp2 = player.GetChild(0).Find("jumpProp2");
-                if (jumpProp2 != null) {
-                    jumpProp2.gameObject.AddComponent<Trail>();
+        void DustAndAshesException() {
+            // Kite
+            Transform DustAndAshesProps = player.GetChild(0);
+            foreach (Transform mesh in DustAndAshesProps) {
+                if (mesh.name.Contains("jumpProp")) {
+                    mesh.gameObject.AddComponent<Trail>();
+                    TrailModPlugin.log("[Trail Exception] Player" + (player.GetSiblingIndex() + 1) + "/" + mesh.name);
+                    return;
                 }
+            }
+        }
 
-                // Nitro cuffVisual
-                Transform cuffVisual = GameObject.Find("holderBalls/ball/cuffVisual/cuffMesh_MainRenderer").transform;
-                if (cuffVisual != null) {
-                    cuffVisual.gameObject.AddComponent<Trail>();
+        // WIP
+        void DustAndAshesShadowException() {
+            GameObject[] plop = SceneManager.GetActiveScene().GetRootGameObjects();
+
+            for (int i = 0; i < plop.Length; i++) {
+                if (plop[i].name == "shadowVisual") {
+                    plop[i].transform.Find("mesh2_MainRenderer").gameObject.AddComponent<Trail>();
+                    TrailModPlugin.log("[Trail Exception] Player" + (player.GetSiblingIndex() + 1) + "/" + plop[i].name);
+                }
+            }
+        }
+
+        void NitroException() {
+            Transform NitroCuffs = GameObject.Find("holderBalls/ball").transform;
+
+            foreach (Transform cuff in NitroCuffs) {
+                if (cuff.name.Contains("cuff")) {
+                    foreach (Transform mesh in cuff) {
+                        if (mesh.name.Contains("_MainRenderer")) {
+                            mesh.gameObject.AddComponent<Trail>();
+                            TrailModPlugin.log("[Trail Exception] Player" + (player.GetSiblingIndex() + 1) + "/" + mesh.name);
+                            return;
+                        }
+                    }
                 }
             }
         }
