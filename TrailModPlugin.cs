@@ -75,7 +75,7 @@ namespace TrailMod {
             Log = this.Logger;
 
             // Load Bundle
-            bundle = AssetBundle.LoadFromFile(Paths.BepInExRootPath + "/plugins/Andyzubukoup-TrailMod/LLB-TrailMod/trailbundle");
+            bundle = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(this.Info.Location), "trailbundle"));
 
             // Path from Harmony
             var harmony = new Harmony(TrailModInfos.PLUGIN_NAME);
