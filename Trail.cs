@@ -85,6 +85,12 @@ namespace TrailMod {
             }
         }
 
+        private const float hueStep = 1f / 60f;
+        void FixedUpdate()
+        {
+            hueRotate += hueStep / TrailModPlugin.fabulousSpeed.Value;
+        }
+
         void ActivateTrail() {
             if (isTrailActive) {
 
@@ -118,9 +124,19 @@ namespace TrailMod {
             }
         }
 
+        private float hueRotate = 0f;
         IEnumerator AnimateMaterialFloat(Material _mat, float timer, int index) {
             while (timer > 0) {
                 timer -= rate / lifeTime;
+                Color color1 = this.color1;
+                Color color2 = this.color2;
+                if (TrailModPlugin.fabulousMode.Value)
+                {
+                    Color.RGBToHSV(color1, out float h1, out float s1, out float v1);
+                    Color.RGBToHSV(color2, out float h2, out float s2, out float v2);
+                    color1 = Color.HSVToRGB((h1 + hueRotate) % 1f, s1, v1);
+                    color2 = Color.HSVToRGB((h2 + hueRotate) % 1f, s2, v2);
+                }
 
                 // Colors
                 Color _color = Color.Lerp(color2, color1, timer);

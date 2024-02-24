@@ -22,6 +22,9 @@ namespace TrailMod {
         internal static ConfigEntry<int> numberOfClones;
         internal static ConfigEntry<int> lifeTime;
 
+        internal static ConfigEntry<bool> fabulousMode;
+        internal static ConfigEntry<int> fabulousSpeed;
+
         internal static ConfigEntry<int> firstColorR;
         internal static ConfigEntry<int> firstColorG;
         internal static ConfigEntry<int> firstColorB;
@@ -69,6 +72,12 @@ namespace TrailMod {
 
             matFactor1 = Config.Bind("4. Texture intensity", "Start", 0, new ConfigDescription("0 = visible texture --> 100 = uniformed color/no texture", new AcceptableValueRange<int>(0, 100)));
             matFactor2 = Config.Bind("4. Texture intensity", "End", 0, new ConfigDescription("0 = visible texture --> 100 = uniformed color/no texture", new AcceptableValueRange<int>(0, 100)));
+
+            Config.Bind("", "gap5", 20, new ConfigDescription("", null, "modmenu_gap"));
+            Config.Bind("5. Fabulous Mode", "Fabulous_header", "5. Fabulous Mode", new ConfigDescription("", null, "modmenu_header"));
+
+            fabulousMode = Config.Bind("5. FabulousMode", "FabulousMode", false, "Enables the power of the rainbow!");
+            fabulousSpeed = Config.Bind("5. FabulousMode", "FabulousSpeed", 3, "Full color rotations per N seconds");
 
             // Init
             instance = this;
