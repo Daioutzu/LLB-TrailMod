@@ -1,2 +1,6 @@
-
-bin
+.vs
+.idea
+*.user
+**/bin
+**/obj
+packages
